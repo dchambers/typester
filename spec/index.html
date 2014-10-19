@@ -1,0 +1,19 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<title>Typester: Spec Tests</title>
+
+		<link rel="stylesheet" type="text/css" href="../dist/mocha/mocha.css">
+	</head>
+	<body>
+		<div id="mocha"></div>
+		<script type="text/javascript" src="../dist/mocha/mocha.js"></script>
+		<script>mocha.setup('bdd')</script>
+		<script type="text/javascript" src="../dist/typester-spec-tests.js"></script>
+		<script>
+			mocha.checkLeaks();
+			mocha.run();
+		</script>
+	</body>
+</html>

@@ -1,0 +1,39 @@
+{
+	"name": "typester",
+	"version": "0.1.0",
+	"description": "Fluent type verification for JavaScript",
+	"main": "lib/typester.js",
+	"dependencies": {
+		"topiarist": "~0.1"
+	},
+	"devDependencies": {
+		"dchambers-lib-build-tool": "~0.1",
+		"chai": "~1.9",
+		"npm-watch": "~0.0"
+	},
+	"watch": {
+		"prepublish": "{lib,spec,scripts}/**/*.js"
+	},
+	"scripts": {
+		"prepublish": "node --harmony scripts/prepublish.js",
+		"postpublish": "node --harmony scripts/postpublish.js",
+		"test": "node --harmony scripts/test.js",
+		"test-browser": "node --harmony scripts/test-browser.js",
+		"watch": "npm-watch"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git://github.com/dchambers/typester.git"
+	},
+	"keywords": [
+		"Type",
+		"Checking",
+		"Typing",
+		"Arguments"
+	],
+	"author": "Dominic Chambers",
+	"license": "Apache License, Version 2.0",
+	"bugs": {
+		"url": "https://github.com/dchambers/typester/issues"
+	}
+}
