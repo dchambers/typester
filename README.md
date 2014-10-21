@@ -24,7 +24,7 @@ Window.prototype.addEventListener = function(target, listener, useCapture) {
   using(arguments)
     .verify('target').fulfills(Postable)
     .verify('listener').isA(Function)
-    .verify('useCapture').maybe.isA(Boolean);
+    .verify('useCapture').optionally.isA(Boolean);
 
   // implement the actual method...
 };
@@ -33,7 +33,7 @@ Some things to note here:
 
   * The `isA()` method can be used to do both `instanceof` checks against objects, and `typeof` checks against literal values.
   * The `fulfills()` method can be used do shape-based checks.
-  * The `maybe` modifier can be used for optional arguments.
+  * The `optionally` modifier can be used for optional arguments.
 
 ## Verifiers
 
