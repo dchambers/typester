@@ -81,3 +81,8 @@ Typester verifications that fail will always throw one of the following four err
   * `TypeError`: if `isA()`, `classIsA()`, `fulfills()` or `classFulfills()` fail.
   * `ValidationError`: if an argument is correctly typed but fails further validation.
   * `RangeError`: a special case of `ValidationError` for _validating-verifiers_ like `positiveNumber()` and `negativeNumber()`.
+
+
+## Performance
+
+Typester has been written with performance in mind. On my machine using Chrome, I found that it adds about a tenth of a microsecond of execution-time per verified argument, when compared with doing the same verification manually.
