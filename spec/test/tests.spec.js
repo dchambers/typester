@@ -2,3 +2,4 @@
 require('chai').should();
 
 require('./typester.js');
+require('./topiarist-verifier.js');

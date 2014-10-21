@@ -19,14 +19,8 @@ describe('typester', function() {
 				.verify('num').isA(Number);
 		}
 
-		function createFunc(arg) {
-			return function() {
-				func(arg);
-			}
-		}
-
-		createFunc().should.throw(ArgumentError);
-		createFunc(10).should.not.throw();
+		func.bind(func, undefined).should.throw(ArgumentError);
+		func.bind(func, 10).should.not.throw();
 	});
 
 	it('throws an ArgumentError if we try to validate a subsequent non-existent argument', function() {
@@ -40,7 +34,7 @@ describe('typester', function() {
 		func.should.throw(ArgumentError);
 	});
 
-	it('throws an TypeError if we try to validate a provided argument is of the wrong type', function() {
+	it('throws a TypeError if we try to validate a provided argument is of the wrong type', function() {
 		function func() {
 			using([true])
 				.verify('num').isA(Number);
