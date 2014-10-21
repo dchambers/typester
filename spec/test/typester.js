@@ -13,6 +13,22 @@ describe('typester', function() {
     func.should.throw(ArgumentError);
 	});
 
+	it('works with real function argument arrays', function() {
+		function func() {
+			using(arguments)
+				.verify('num').isA(Number);
+		}
+
+		function createFunc(arg) {
+			return function() {
+				func(arg);
+			}
+		}
+
+		createFunc().should.throw(ArgumentError);
+		createFunc(10).should.not.throw();
+	});
+
 	it('throws an ArgumentError if we try to validate a subsequent non-existent argument', function() {
 		function func() {
 			using([true])
