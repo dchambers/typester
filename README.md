@@ -69,7 +69,7 @@ var ValidationError = typester.ValidationError;
 
 typester.addVerifier({
   isEmailAddress: function() {
-    this.isA(this.argValue, String);
+    this.isA(String);
     if(this.argValue.indexOf('@') == -1) throw new ValidationError(this.argName +
       ' argument must be a valid email address');
   }
