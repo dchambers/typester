@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/dchambers/typester.png)](https://travis-ci.org/dchambers/typester)
+
 # Typester
 
 Fluent type verification for JavaScript.
