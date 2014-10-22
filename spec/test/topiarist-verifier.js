@@ -7,11 +7,11 @@ describe('topiarist-verifier', function() {
     it('can be used to verify both literal and non-literal objects', function() {
       function func() {
         using(arguments)
-          .verify('func').isA(Function);
+          .verify('func').isA(String);
       }
 
-      func.bind(func, function() {}).should.not.throw();
-      func.bind(func, new Function('')).should.not.throw();
+      func.bind(func, '').should.not.throw();
+      func.bind(func, new String('')).should.not.throw();
       func.bind(func, {}).should.throw(TypeError);
     });
 
