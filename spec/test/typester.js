@@ -40,7 +40,6 @@ describe('typester', function() {
 				.verify('num').isA(Number);
 		}
 
-		func.should.throw('num argument must be a Number');
 		func.should.throw(TypeError);
 	});
 });
