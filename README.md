@@ -34,10 +34,11 @@ Some things to note here:
   * The `isA()` method can be used to do both `instanceof` checks against objects, and `typeof` checks against literal values.
   * The `fulfills()` method can be used do shape-based checks.
   * The `optionally` modifier can be used for optional arguments.
+  * It's the developer's responsibility to ensure the `verify()` statements are performed in the correct order &mdash; the provided argument name is only used for informational purposes when an error is thrown.
 
 ## Verifiers
 
-Here's the core list of _verifiers_ you can use in Typester:
+Here's the list of core _verifiers_ you can use in Typester:
 
   * `isA()`
   * `classIsA()`
@@ -53,25 +54,41 @@ and here's the list of _validating-verifiers_ that come with Typester:
   * `nonEmptyString()`
   * `nonEmptyArray()`
 
-Validating verifiers are usually some additional check over and above a lone `isA()` invocation.
+Validating verifiers are usually some additional check over and above a simple `isA()` invocation.
 
 
 ## Custom verifiers
 
-Custom _verifiers_ can be added using the `typester.addVerifier()` method. For example, here's how you might create a custom _validating-verifier_ for verifying email addresses:
+Custom _verifiers_ can be added using the `typester.addVerifier()` method. For example, here's how you might create a custom _validating-verifier_ for email addresses:
 
 ``` javascript
 var typester = require('typester');
-var ValidationError
+var ValidationError = typester.ValidationError;
 
 typester.addVerifier({
-  email: function(argName, argValue) {
-    this.isA(argValue, String);
-    if(arg.indexOf('@') == -1) throw new ValidationError(argName +
+  isEmailAddress: function() {
+    this.isA(this.argValue, String);
+    if(this.argValue.indexOf('@') == -1) throw new ValidationError(this.argName +
       ' argument must be a valid email address');
   }
 })
 ```
+
+Subsequently, our custom `isEmailAddress()` verifier might be used like this:
+
+``` javascript
+var using = require('typester').using;
+
+function Person(name, email) {
+  using(arguments)
+    .verify('name').isA(String)
+    .verify('email').isEmailAddress();
+
+  this.name = name;
+  this.email = email;
+}
+```
+
 
 ## Error Types
 
@@ -85,4 +102,4 @@ Typester verifications that fail will always throw one of the following four err
 
 ## Performance
 
-Typester has been written with performance in mind. On my machine using Chrome, I found that it adds about a tenth of a microsecond of execution-time per verified argument, when compared with doing the same verification manually.
+Typester has been written with performance in mind. On my machine using Chrome, I found that it adds about a tenth of a microsecond of execution-time per verified argument, when compared with doing the same verification using plain JavaScript.
