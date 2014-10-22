@@ -7,7 +7,7 @@ describe('number-verifier', function() {
     it('throws a TypeError if something other than a number is provided', function() {
       function func(num) {
         using(arguments)
-          .verify('num').positiveNumber();
+          .verify('num').number();
       }
 
       func.bind(func, true).should.throw(TypeError);
