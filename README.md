@@ -49,14 +49,14 @@ Here's the list of core _verifiers_ you can use in Typester:
 
 and here's the list of _validating-verifiers_ that come with Typester:
 
+  * `number()`
   * `positiveNumber()`
   * `negativeNumber()`
   * `integerNumber()`
-  * `floatNumber()`
   * `nonEmptyString()`
   * `nonEmptyArray()`
 
-Validating verifiers are usually some additional check over and above a simple `isA()` invocation.
+Validating verifiers are usually some additional check over and above a simple `isA()` invocation. The `number()` verifier is worth mentioning, as it enhances `isA(Number)` by ensuring failure for `NaN`, `NEGATIVE_INFINITY` and `POSITIVE_INFINITY`.
 
 
 ## Custom verifiers
