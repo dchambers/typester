@@ -105,3 +105,55 @@ Typester verifications that fail will always throw one of the following four err
 ## Performance
 
 Typester has been written with performance in mind. On my machine using Chrome, I found that it adds about a tenth of a microsecond of execution-time per verified argument, when compared with doing the same verification using plain JavaScript.
+
+
+## Installing
+
+### NPM Instructions
+
+If you use NPM then you should install as follows:
+
+``` shell
+npm install typester
+```
+
+and start making use of typester using the following code:
+
+``` javascript
+var using = require('typester').using;
+```
+
+### Alternate Instructions
+
+Alternatively, you can download the latest release, unzip, and start making use of typester using the following code:
+
+``` html
+<script src="dist/typester.js"></script>
+```
+
+
+# Running Tests
+
+### NPM Instructions
+
+If you've installed via NPM you can run the tests as follows:
+
+``` shell
+npm test
+```
+
+which runs all the tests in Node.js (using _mocha_), and the main spec tests in Firefox and Chrome (using _karma_). You can run the tests against Firefox and Chrome, with automatic re-runs as files are changed, using the command:
+
+``` shell
+npm run test-browser
+```
+
+Finally, you also have the option to manually open 'spec/index.html' in the browser of your choice. To ensure that changes to the source code automatically cause the bundles to be re-built, you can run:
+
+``` shell
+npm run watch
+```
+
+### Alternate Instructions
+
+If you haven't installed via NPM then there isn't too much point to running the tests since any changes to the source code won't be reflected. However, if you want to anyway, you can run the tests by opening 'spec/index.html' in the browser of your choice.
