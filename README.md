@@ -49,6 +49,7 @@ Here's the list of core _verifiers_ you can use in Typester:
 
 and here's the list of _validating-verifiers_ that come with Typester:
 
+  * `object()`
   * `number()`
   * `positiveNumber()`
   * `negativeNumber()`
@@ -56,7 +57,7 @@ and here's the list of _validating-verifiers_ that come with Typester:
   * `nonEmptyString()`
   * `nonEmptyArray()`
 
-Validating verifiers are usually some additional check over and above a simple `isA()` invocation. The `number()` verifier is worth mentioning, as it enhances `isA(Number)` by ensuring failure for `NaN`, `NEGATIVE_INFINITY` and `POSITIVE_INFINITY`.
+Validating verifiers are usually some additional check over and above a simple `isA()` invocation. The `object()` and `number()` verifiers are worth mentioning, as these enhance `isA(Object)` and `isA(Number)` respectively. By ensuring that `typeof(object) == true` in the case of `object()`, and by ensuring failure for `NaN`, `NEGATIVE_INFINITY` and `POSITIVE_INFINITY` in the case of `number()`.
 
 
 ## Custom verifiers

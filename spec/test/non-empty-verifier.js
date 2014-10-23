@@ -11,7 +11,7 @@ describe('non-empty-verifier', function() {
       }
 
       func.bind(func, true).should.throw(TypeError);
-      func.bind(func, true).should.throw('str argument must be a String');
+      func.bind(func, true).should.throw('str argument must be a String.');
     });
 
     it('throws a ValidationError if an empty string is provided', function() {
@@ -21,7 +21,7 @@ describe('non-empty-verifier', function() {
       }
 
       func.bind(func, '').should.throw(ValidationError);
-      func.bind(func, '').should.throw('str argument must be a non-empty string');
+      func.bind(func, '').should.throw('str argument must be a non-empty string.');
       func.bind(func, 'x').should.not.throw();
     });
   });
@@ -34,7 +34,7 @@ describe('non-empty-verifier', function() {
       }
 
       func.bind(func, true).should.throw(TypeError);
-      func.bind(func, true).should.throw('list argument must be a Array');
+      func.bind(func, true).should.throw('list argument must be a Array.');
     });
 
     it('throws a ValidationError if an empty array is provided', function() {
@@ -45,8 +45,23 @@ describe('non-empty-verifier', function() {
 
       func.bind(func, new Array()).should.throw(ValidationError);
       func.bind(func, []).should.throw(ValidationError);
-      func.bind(func, []).should.throw('list argument must be a non-empty array');
+      func.bind(func, []).should.throw('list argument must be a non-empty array.');
       func.bind(func, [1]).should.not.throw();
+    });
+  });
+
+  describe('object', function() {
+    it('throws a type error if a function, string, or number is provided', function() {
+        function func(obj) {
+          using(arguments)
+            .verify('obj').object();
+        }
+
+        func.bind(func, {}).should.not.throw(ValidationError);
+        func.bind(func, function() {}).should.throw(ValidationError);
+        func.bind(func, 10).should.throw(ValidationError);
+        func.bind(func, 'x').should.throw(ValidationError);
+        func.bind(func, 'x').should.throw('obj argument must be an object.');
     });
   });
 });
