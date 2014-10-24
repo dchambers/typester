@@ -13,16 +13,6 @@ describe('typester', function() {
 			func.should.throw(ArgumentError);
 		});
 
-		it('throws a ArgumentError if verify() is invoked without arguments', function() {
-			function func() {
-				using([10])
-					.verify().isA(Number);
-			}
-
-			func.should.throw('argName argument must be provided');
-			func.should.throw(ArgumentError);
-		});
-
 		it('throws a TypeError if verify() is passed something other than an Array', function() {
 			function func(num) {
 				using(arguments)
