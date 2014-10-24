@@ -86,5 +86,23 @@ describe('typester', function() {
 			func.bind(func, '10', true).should.throw(TypeError);
 			func.bind(func, '10', true).should.throw('num argument must be a Number');
 		});
+
+		it('throws an error if not all of the arguments from the previous verification were accounted for', function() {
+			function func() {
+				using(arguments)
+					.verify('bool').isA(Boolean)
+					.verify('num').optionally.isA(Number);
+			}
+
+			function nextVerification() {
+				using([]);
+			}
+
+			func(true, 10, 'text');
+			nextVerification.should.throw(ArgumentError);
+
+			func(true, 10, 'text');
+			nextVerification.should.throw('only 2 argument(s) verified but 3 were provided: [true, 10, text]');
+		});
 	});
 });

@@ -16,6 +16,7 @@ Typester is inspired by the [check-types](https://www.npmjs.org/package/check-ty
     * Allow a single `isA()` check to be used for what would otherwise have to be done with both `instanceof` and `typeof()`checks, as appropriate.
     * Provide a `fulfills()` method that can verify any object using shape-based duck typing.
     *  Allow `isA()` checks to efficiently verify multiple inheritance (e.g. sand-boxed mix-ins and implemented interfaces) for applications that themselves used [topiarist](https://github.com/BladeRunnerJS/topiarist) to set these up.
+  * Failing if a method is invoked with more arguments than are expected.
 
 Here's how you might use Typester to implement `addEventListener()`:
 
@@ -37,6 +38,7 @@ Some things to note here:
   * The `fulfills()` method can be used do shape-based checks.
   * The `optionally` modifier can be used for optional arguments.
   * It's the developer's responsibility to ensure the `verify()` statements are performed in the correct order &mdash; the provided argument name is only used for informational purposes when an error is thrown.
+  * it's the developer's responsibility to ensure that verifications are provided for all arguments &mdash; otherwise an error will be thrown.
 
 ## Verifiers
 
