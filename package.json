@@ -19,6 +19,7 @@
 		"postpublish": "node --harmony scripts/postpublish.js",
 		"test": "node --harmony scripts/test.js",
 		"test-browser": "node --harmony scripts/test-browser.js",
+		"test-performance": "node --harmony scripts/test-performance.js",
 		"watch": "npm-watch"
 	},
 	"repository": {
