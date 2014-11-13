@@ -17,17 +17,20 @@ Typester is inspired by the [check-types](https://www.npmjs.org/package/check-ty
     * Provide a `fulfills()` method that can verify any object using shape-based duck typing.
     *  Allow `isA()` checks to efficiently verify multiple inheritance (e.g. sand-boxed mix-ins and implemented interfaces) for applications that themselves used [topiarist](https://github.com/BladeRunnerJS/topiarist) to set these up.
   * Failing if a method is invoked with more arguments than are expected.
+  * Providing a _hot-spotting_ mechanism that causes type-verification to be disabled within performance hot spots.
 
 Here's how you might use Typester to implement `addEventListener()`:
 
 ``` javascript
 var using = require('typester').using;
+var verify = require('typester').verify;
 
 Window.prototype.addEventListener = function(target, listener, useCapture) {
-  using(arguments)
-    .verify('target').fulfills(Postable)
-    .verify('listener').isA(Function)
-    .verify('useCapture').optionally.isA(Boolean);
+  using(arguments, function() {
+    verify('target').fulfills(Postable);
+    verify('listener').isA(Function);
+    verify('useCapture').optionally.isA(Boolean);
+  });
 
   // implement the actual method...
 };
@@ -83,11 +86,13 @@ Subsequently, our custom `isEmailAddress()` verifier might be used like this:
 
 ``` javascript
 var using = require('typester').using;
+var verify = require('typester').verify;
 
 function Person(name, email) {
-  using(arguments)
-    .verify('name').isA(String)
-    .verify('email').isEmailAddress();
+  using(arguments, function() {
+    verify('name').isA(String);
+    verify('email').isEmailAddress();
+  });
 
   this.name = name;
   this.email = email;
@@ -107,7 +112,26 @@ Typester verifications that fail will always throw one of the following four err
 
 ## Performance
 
-Typester has been written with performance in mind. On my machine using Chrome, I found that it adds about a tenth of a microsecond of execution-time per verified argument, when compared with doing the same verification using plain JavaScript.
+Typester has been written with performance in mind. On my machine using Chrome, I found that it adds about a tenth of a microsecond of execution-time per verified argument, when compared with doing the same verification using plain JavaScript. However, this is still inferior to statically typed languages where all type verification is performed at _compile-time_. To put JavaScript on a more level footing with such languages, typester includes an opt-in _hot-spotting_ mechanism that allows type verification to be relaxed in performance critical areas.
+
+Functions can enable this feature by providing an _identifier_ argument to the `using()` method, for example:
+
+``` javascript
+function onReady(callback, timeout) {
+  using(arguments, function() {
+    verify('callback').isA(Function);
+    verify('timeout').isA(Number);
+  }, onReady);
+
+  // ...
+}
+```
+
+This will cause such functions to cease verifying their arguments if they are invoked thousands of times per second &mdash; actually a hundred times within a tenth of a second.
+
+The extra argument is normally a JavaScript object that can be used to uniquely identify the _invoked-function_, which can be achieved by passing a reference to the function itself, as is shown above. Even better, however, the argument could be an object that uniquely identifies the _function-invocation_, so we can guarantee that each invocation of a function has had type verification performed at least once, akin to what is done in statically typed languages.
+
+Since re-usable libraries can't know whether their code will become part of a hot-spot, we encourage libraries to always provide an _identifier_ when invoking the `using()` method.
 
 
 ## Installing
@@ -124,6 +148,7 @@ and start making use of typester using the following code:
 
 ``` javascript
 var using = require('typester').using;
+var verify = require('typester').verify;
 ```
 
 ### Alternate Instructions
