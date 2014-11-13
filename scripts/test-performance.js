@@ -8,7 +8,7 @@ function typesterFunc(num1, num2) {
   using(arguments, function() {
     verify('num1').isA(Number);
     verify('num2').isA(Number);
-  });
+  }, typesterFunc);
 
   return num1 + num2;
 }
