@@ -1,3 +1,5 @@
+'use strict';
+
 var using = require('../lib/typester').using;
 var topiarist = require('topiarist');
 

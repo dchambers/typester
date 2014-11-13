@@ -1,3 +1,5 @@
+'use strict';
+
 var typester = require('../../lib/typester');
 var using = typester.using;
 var ArgumentError = typester.ArgumentError;
@@ -9,7 +11,7 @@ describe('typester', function() {
 				using();
 			}
 
-			func.should.throw('arguments argument must be provided');
+			func.should.throw('args argument must be provided');
 			func.should.throw(ArgumentError);
 		});
 

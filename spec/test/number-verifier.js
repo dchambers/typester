@@ -1,3 +1,5 @@
+'use strict';
+
 var typester = require('../../lib/typester');
 var ValidationError = typester.ValidationError;
 var using = typester.using;

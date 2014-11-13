@@ -1,3 +1,5 @@
+'use strict';
+
 // install chai
 require('chai').should();
 

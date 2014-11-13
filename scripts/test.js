@@ -1,3 +1,5 @@
+'use strict';
+
 var build = require('dchambers-lib-build-tool');
 
 Promise.resolve().then(function() {
