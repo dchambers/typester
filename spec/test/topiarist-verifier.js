@@ -3,6 +3,7 @@
 var topiarist = require('topiarist');
 var typester = require('../../lib/typester');
 var using = typester.using;
+var verify = typester.verify;
 var ArgumentError = typester.ArgumentError;
 
 topiarist.install();
@@ -24,8 +25,9 @@ describe('topiarist-verifier', function() {
   describe('isA', function() {
     it('can be used to verify both literal and non-literal objects', function() {
       function func(str) {
-        using(arguments)
-          .verify('str').isA(String);
+        using(arguments, function() {
+          verify('str').isA(String);
+        });
       }
 
       func.bind(func, '').should.not.throw();
@@ -36,8 +38,9 @@ describe('topiarist-verifier', function() {
 
     it('can be used to verify objects created from custom classes', function() {
       function func(obj) {
-        using(arguments)
-          .verify('obj').isA(Class);
+        using(arguments, function() {
+          verify('obj').isA(Class);
+        });
       }
 
       func.bind(func, new Class()).should.not.throw();
@@ -48,8 +51,9 @@ describe('topiarist-verifier', function() {
   describe('classIsA', function() {
     it('can be used to verify that classes would produce instance variables that pass the isA() check', function() {
       function func(classRef) {
-        using(arguments)
-          .verify('classRef').classIsA(Class);
+        using(arguments, function() {
+          verify('classRef').classIsA(Class);
+        });
       }
 
       func.bind(func, Class).should.not.throw();
@@ -62,8 +66,9 @@ describe('topiarist-verifier', function() {
   describe('fulfills', function() {
     it('can be used to verify an objects shape', function() {
       function func(obj) {
-        using(arguments)
-          .verify('obj').fulfills(SubClass);
+        using(arguments, function() {
+          verify('obj').fulfills(SubClass);
+        });
       }
 
       func.bind(func, new SubClass()).should.not.throw();
@@ -76,8 +81,9 @@ describe('topiarist-verifier', function() {
   describe('classFulfills', function() {
     it('can be used to verify that classes would produce instance variables that pass the fulfills() check', function() {
       function func(classRef) {
-        using(arguments)
-          .verify('classRef').classFulfills(SubClass);
+        using(arguments, function() {
+          verify('classRef').classFulfills(SubClass);
+        });
       }
 
       function MyClass() {

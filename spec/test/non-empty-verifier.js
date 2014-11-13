@@ -3,13 +3,15 @@
 var typester = require('../../lib/typester');
 var ValidationError = typester.ValidationError;
 var using = typester.using;
+var verify = typester.verify;
 
 describe('non-empty-verifier', function() {
   describe('nonEmptyString', function() {
     it('throws a TypeError if something other than a string is provided', function() {
       function func(str) {
-        using(arguments)
-          .verify('str').nonEmptyString();
+        using(arguments, function() {
+          verify('str').nonEmptyString();
+        });
       }
 
       func.bind(func, true).should.throw(TypeError);
@@ -18,8 +20,9 @@ describe('non-empty-verifier', function() {
 
     it('throws a ValidationError if an empty string is provided', function() {
       function func(str) {
-        using(arguments)
-          .verify('str').nonEmptyString();
+        using(arguments, function() {
+          verify('str').nonEmptyString();
+        });
       }
 
       func.bind(func, '').should.throw(ValidationError);
@@ -31,8 +34,9 @@ describe('non-empty-verifier', function() {
   describe('nonEmptyArray', function() {
     it('throws a TypeError if something other than an array is provided', function() {
       function func(list) {
-        using(arguments)
-          .verify('list').nonEmptyArray();
+        using(arguments, function() {
+          verify('list').nonEmptyArray();
+        });
       }
 
       func.bind(func, true).should.throw(TypeError);
@@ -41,8 +45,9 @@ describe('non-empty-verifier', function() {
 
     it('throws a ValidationError if an empty array is provided', function() {
       function func(list) {
-        using(arguments)
-          .verify('list').nonEmptyArray();
+        using(arguments, function() {
+          verify('list').nonEmptyArray();
+        });
       }
 
       func.bind(func, new Array()).should.throw(ValidationError);
@@ -55,8 +60,9 @@ describe('non-empty-verifier', function() {
   describe('object', function() {
     it('throws a type error if a function, string, or number is provided', function() {
         function func(obj) {
-          using(arguments)
-            .verify('obj').object();
+          using(arguments, function() {
+            verify('obj').object();
+          });
         }
 
         func.bind(func, {}).should.not.throw(ValidationError);
