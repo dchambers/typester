@@ -114,13 +114,9 @@ Typester verifications that fail will always throw one of the following four err
 
 ## Performance
 
-Typester has been written with performance in mind. On my machine using Chrome, I found that it adds about a tenth of a microsecond of execution-time per verified argument, when compared with doing the same verification using plain JavaScript. However, this is still inferior to statically typed languages where all type verification is performed at _compile-time_. To put JavaScript on a more level footing with such languages, typester includes a _hot-spotting_ mechanism that disables all type verification for methods that are being invoked thousands of times a second  &mdash; actually a hundred times within a tenth of a second.
+Typester has been written with performance in mind. On my machine using Chrome, I found that it adds about a tenth of a microsecond of execution-time per verified argument, when compared with doing the same verification using plain JavaScript. However, this is still inferior to statically typed languages where all type verification is performed at _compile-time_. To put JavaScript on a more level footing with such languages, typester includes a _hot-spotting_ mechanism that disables type verification for methods that are being invoked thousands of times a second  &mdash; actually a hundred times within a tenth of a second.
 
-The hotspotting mechanism has the benefit that most unique function invocations will be verified at least once, akin to what is done in statically typed languages. If you do want to continue verifying all types at all times, you can do so as follows:
-
-```
-typster.disableHotspotting();
-```
+The hotspotting mechanism has the benefit that most unique function invocations will be verified at least once, akin to what is done in statically typed languages.
 
 
 ## Installing
