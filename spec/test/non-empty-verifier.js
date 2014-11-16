@@ -8,10 +8,12 @@ var verify = typester.verify;
 describe('non-empty-verifier', function() {
   describe('nonEmptyString', function() {
     it('throws a TypeError if something other than a string is provided', function() {
+      var verifyArgs = typester.createVerifier(function(verify) {
+        verify('str').nonEmptyString();
+      });
+
       function func(str) {
-        using(arguments, function() {
-          verify('str').nonEmptyString();
-        });
+        verifyArgs(str);
       }
 
       func.bind(func, true).should.throw(TypeError);
@@ -19,10 +21,12 @@ describe('non-empty-verifier', function() {
     });
 
     it('throws a ValidationError if an empty string is provided', function() {
+      var verifyArgs = typester.createVerifier(function(verify) {
+        verify('str').nonEmptyString();
+      });
+
       function func(str) {
-        using(arguments, function() {
-          verify('str').nonEmptyString();
-        });
+        verifyArgs(str);
       }
 
       func.bind(func, '').should.throw(ValidationError);
@@ -33,10 +37,12 @@ describe('non-empty-verifier', function() {
 
   describe('nonEmptyArray', function() {
     it('throws a TypeError if something other than an array is provided', function() {
+      var verifyArgs = typester.createVerifier(function(verify) {
+        verify('list').nonEmptyArray();
+      });
+
       function func(list) {
-        using(arguments, function() {
-          verify('list').nonEmptyArray();
-        });
+        verifyArgs(list);
       }
 
       func.bind(func, true).should.throw(TypeError);
@@ -44,10 +50,12 @@ describe('non-empty-verifier', function() {
     });
 
     it('throws a ValidationError if an empty array is provided', function() {
+      var verifyArgs = typester.createVerifier(function(verify) {
+        verify('list').nonEmptyArray();
+      });
+
       function func(list) {
-        using(arguments, function() {
-          verify('list').nonEmptyArray();
-        });
+        verifyArgs(list);
       }
 
       func.bind(func, new Array()).should.throw(ValidationError);
@@ -59,10 +67,12 @@ describe('non-empty-verifier', function() {
 
   describe('object', function() {
     it('throws a type error if a function, string, or number is provided', function() {
+        var verifyArgs = typester.createVerifier(function(verify) {
+          verify('obj').object();
+        });
+
         function func(obj) {
-          using(arguments, function() {
-            verify('obj').object();
-          });
+          verifyArgs(obj);
         }
 
         func.bind(func, {}).should.not.throw(ValidationError);
