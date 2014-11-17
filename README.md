@@ -24,18 +24,19 @@ Here's how you might use Typester to implement `addEventListener()`:
 ``` javascript
 var typester = require('typester');
 
-var verifyArgs = typester.createVerifier(function(verify) {
+var verifyAddEventListenerArgs = typester.createVerifier(function(verify) {
   verify('target').fulfills(Postable);
   verify('listener').isA(Function);
   verify('useCapture').optionally.isA(Boolean);
 });
 
 Window.prototype.addEventListener = function(target, listener, useCapture) {
-  verifyArgs(target, listener, useCapture);
+  verifyAddEventListenerArgs(target, listener, useCapture);
 
   // implement the actual method...
 };
 ```
+
 Some things to note here:
 
   * The `isA()` method can be used to do both `instanceof` checks against objects, and `typeof` checks against literal values.
@@ -88,13 +89,13 @@ Subsequently, our custom `isEmailAddress()` verifier might be used like this:
 ``` javascript
 var typester = require('typester');
 
-var verifyArgs = typester.createVerifier(function(verify) {
+var verifyPersonArgs = typester.createVerifier(function(verify) {
   verify('name').isA(String);
   verify('email').isEmailAddress();
 });
 
 function Person(name, email) {
-  verifyArgs(name, email);
+  verifyPersonArgs(name, email);
 
   this.name = name;
   this.email = email;
