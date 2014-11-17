@@ -1,5 +1,6 @@
 'use strict';
 
+var sinon = require('sinon');
 var typester = require('../../lib/typester');
 var ArgumentError = typester.ArgumentError;
 
@@ -106,6 +107,99 @@ describe('typester', function() {
 
 			func.bind(func, true, 10, 'text').should.throw(ArgumentError);
 			func.bind(func, true, 10, 'text').should.throw('only 2 argument(s) verified but 3 were provided: [true, 10, text]');
+		});
+	});
+
+	describe('hotspotting', function() {
+		var clock;
+
+		beforeEach(function() {
+			clock = sinon.useFakeTimers();
+		});
+
+		afterEach(function() {
+			clock.restore();
+		});
+
+		it('disables type verification once 100 invocations have ocurred in less than 100ms', function() {
+			var verifyArgs = typester.createVerifier(function(verify) {
+				verify('bool').isA(Boolean);
+			});
+
+			function func(bool) {
+				verifyArgs(bool);
+			}
+
+			var validInvocation = func.bind(func, true);
+			var invalidInvocation = func.bind(func, 10);
+
+			for(var i = 0; i < 100; ++i) {
+				validInvocation.should.not.throw();
+				clock.tick(1);
+			}
+
+			invalidInvocation.should.not.throw();
+		});
+
+		it('does not disable type verification if less than 100 invocations have ocurred', function() {
+			var verifyArgs = typester.createVerifier(function(verify) {
+				verify('bool').isA(Boolean);
+			});
+
+			function func(bool) {
+				verifyArgs(bool);
+			}
+
+			var validInvocation = func.bind(func, true);
+			var invalidInvocation = func.bind(func, 10);
+
+			for(var i = 0; i < 99; ++i) {
+				validInvocation.should.not.throw();
+			}
+
+			invalidInvocation.should.throw(TypeError);
+		});
+
+		it('does not disable type verification if the 100 invocations took greater than or equal to 100ms', function() {
+			var verifyArgs = typester.createVerifier(function(verify) {
+				verify('bool').isA(Boolean);
+			});
+
+			function func(bool) {
+				verifyArgs(bool);
+			}
+
+			var validInvocation = func.bind(func, true);
+			var invalidInvocation = func.bind(func, 10);
+
+			for(var i = 0; i < 99; ++i) {
+				validInvocation.should.not.throw();
+				clock.tick(1);
+			}
+			clock.tick(2);
+			validInvocation.should.not.throw();
+
+			invalidInvocation.should.throw(TypeError);
+		});
+
+		it('does not disable type verification if any of the 100 invocations failed', function() {
+			var verifyArgs = typester.createVerifier(function(verify) {
+				verify('bool').isA(Boolean);
+			});
+
+			function func(bool) {
+				verifyArgs(bool);
+			}
+
+			var validInvocation = func.bind(func, true);
+			var invalidInvocation = func.bind(func, 10);
+
+			for(var i = 0; i < 99; ++i) {
+				validInvocation.should.not.throw();
+			}
+			invalidInvocation.should.throw(TypeError);
+
+			invalidInvocation.should.throw(TypeError);
 		});
 	});
 });

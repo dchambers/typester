@@ -9,6 +9,7 @@
 	"devDependencies": {
 		"dchambers-lib-build-tool": "~0.1",
 		"chai": "~1.9",
+		"sinon": "1.11.1",
 		"npm-watch": "~0.0"
 	},
 	"watch": {
