@@ -17,17 +17,21 @@ Typester is inspired by the [check-types](https://www.npmjs.org/package/check-ty
     * Provide a `fulfills()` method that can verify any object using shape-based duck typing.
     *  Allow `isA()` checks to efficiently verify multiple inheritance (e.g. sand-boxed mix-ins and implemented interfaces) for applications that themselves used [topiarist](https://github.com/BladeRunnerJS/topiarist) to set these up.
   * Failing if a method is invoked with more arguments than are expected.
+  * Providing a _hot-spotting_ mechanism that causes type-verification to be disabled within code hot spots.
 
 Here's how you might use Typester to implement `addEventListener()`:
 
 ``` javascript
-var using = require('typester').using;
+var typester = require('typester');
+
+var verifyArgs = typester.createVerifier(function(verify) {
+  verify('target').fulfills(Postable);
+  verify('listener').isA(Function);
+  verify('useCapture').optionally.isA(Boolean);
+});
 
 Window.prototype.addEventListener = function(target, listener, useCapture) {
-  using(arguments)
-    .verify('target').fulfills(Postable)
-    .verify('listener').isA(Function)
-    .verify('useCapture').optionally.isA(Boolean);
+  verifyArgs(target, listener, useCapture);
 
   // implement the actual method...
 };
@@ -64,13 +68,13 @@ Validating verifiers are usually some additional check over and above a simple `
 
 ## Custom verifiers
 
-Custom _verifiers_ can be added using the `typester.addVerifier()` method. For example, here's how you might create a custom _validating-verifier_ for email addresses:
+Custom _verifiers_ can be added using the `typester.addCustomVerifier()` method. For example, here's how you might create a custom _validating-verifier_ for email addresses:
 
 ``` javascript
 var typester = require('typester');
 var ValidationError = typester.ValidationError;
 
-typester.addVerifier({
+typester.addCustomVerifier({
   isEmailAddress: function() {
     this.isA(String);
     if(this.argValue.indexOf('@') == -1) throw new ValidationError(this.argName +
@@ -82,12 +86,15 @@ typester.addVerifier({
 Subsequently, our custom `isEmailAddress()` verifier might be used like this:
 
 ``` javascript
-var using = require('typester').using;
+var typester = require('typester');
+
+var verifyArgs = typester.createVerifier(function(verify) {
+  verify('name').isA(String);
+  verify('email').isEmailAddress();
+});
 
 function Person(name, email) {
-  using(arguments)
-    .verify('name').isA(String)
-    .verify('email').isEmailAddress();
+  verifyArgs(name, email);
 
   this.name = name;
   this.email = email;
@@ -107,7 +114,9 @@ Typester verifications that fail will always throw one of the following four err
 
 ## Performance
 
-Typester has been written with performance in mind. On my machine using Chrome, I found that it adds about a tenth of a microsecond of execution-time per verified argument, when compared with doing the same verification using plain JavaScript.
+Typester has been written with performance in mind. On my machine using Chrome, I found that it adds about a tenth of a microsecond of execution-time per verified argument, when compared with doing the same verification using plain JavaScript. However, this is still inferior to statically typed languages where all type verification is performed at _compile-time_. To put JavaScript on a more level footing with such languages, typester includes a _hot-spotting_ mechanism that disables type verification for methods that are being invoked thousands of times a second  &mdash; actually a hundred times within a tenth of a second.
+
+The hotspotting mechanism has the benefit that most unique function invocations will be verified at least once, akin to what is done in statically typed languages.
 
 
 ## Installing
@@ -123,7 +132,7 @@ npm install typester
 and start making use of typester using the following code:
 
 ``` javascript
-var using = require('typester').using;
+var typester = require('typester');
 ```
 
 ### Alternate Instructions

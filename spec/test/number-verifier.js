@@ -1,13 +1,19 @@
+'use strict';
+
 var typester = require('../../lib/typester');
 var ValidationError = typester.ValidationError;
 var using = typester.using;
+var verify = typester.verify;
 
 describe('number-verifier', function() {
   describe('number', function() {
     it('throws a TypeError if something other than a number is provided', function() {
+      var verifyArgs = typester.createVerifier(function(verify) {
+        verify('num').number();
+      });
+
       function func(num) {
-        using(arguments)
-          .verify('num').number();
+        verifyArgs(num);
       }
 
       func.bind(func, true).should.throw(TypeError);
@@ -15,9 +21,12 @@ describe('number-verifier', function() {
     });
 
     it('throws a ValidationError if a conceptual number is provided', function() {
+      var verifyArgs = typester.createVerifier(function(verify) {
+        verify('num').number();
+      });
+
       function func(num) {
-        using(arguments)
-          .verify('num').number();
+        verifyArgs(num);
       }
 
       func.bind(func, Number.NaN).should.throw(ValidationError);
@@ -28,27 +37,36 @@ describe('number-verifier', function() {
 
   describe('positiveNumber', function() {
     it('throws a TypeError if something other than a number is provided', function() {
+      var verifyArgs = typester.createVerifier(function(verify) {
+        verify('num').positiveNumber();
+      });
+
       function func(num) {
-        using(arguments)
-          .verify('num').positiveNumber();
+        verifyArgs(num);
       }
 
       func.bind(func, true).should.throw('num argument must be a Number');
     });
 
     it('throws a ValidationError if a conceptual number is provided', function() {
+      var verifyArgs = typester.createVerifier(function(verify) {
+        verify('num').positiveNumber();
+      });
+
       function func(num) {
-        using(arguments)
-          .verify('num').positiveNumber();
+        verifyArgs(num);
       }
 
       func.bind(func, Number.NaN).should.throw('num argument must be a real number');
     });
 
     it('throws a ValidationError if a non-positive number is provided', function() {
+      var verifyArgs = typester.createVerifier(function(verify) {
+        verify('num').positiveNumber();
+      });
+
       function func(num) {
-        using(arguments)
-          .verify('num').positiveNumber();
+        verifyArgs(num);
       }
 
       func.bind(func, 1).should.not.throw();
@@ -60,27 +78,36 @@ describe('number-verifier', function() {
 
   describe('negativeNumber', function() {
     it('throws a TypeError if something other than a number is provided', function() {
+      var verifyArgs = typester.createVerifier(function(verify) {
+        verify('num').negativeNumber();
+      });
+
       function func(num) {
-        using(arguments)
-          .verify('num').negativeNumber();
+        verifyArgs(num);
       }
 
       func.bind(func, true).should.throw('num argument must be a Number');
     });
 
     it('throws a ValidationError if a conceptual number is provided', function() {
+      var verifyArgs = typester.createVerifier(function(verify) {
+        verify('num').negativeNumber();
+      });
+
       function func(num) {
-        using(arguments)
-          .verify('num').negativeNumber();
+        verifyArgs(num);
       }
 
       func.bind(func, Number.NaN).should.throw('num argument must be a real number');
     });
 
     it('throws a ValidationError if a non-negative number is provided', function() {
+      var verifyArgs = typester.createVerifier(function(verify) {
+        verify('num').negativeNumber();
+      });
+
       function func(num) {
-        using(arguments)
-          .verify('num').negativeNumber();
+        verifyArgs(num);
       }
 
       func.bind(func, -1).should.not.throw();
@@ -92,27 +119,36 @@ describe('number-verifier', function() {
 
   describe('integerNumber', function() {
     it('throws a TypeError if something other than a number is provided', function() {
+      var verifyArgs = typester.createVerifier(function(verify) {
+        verify('num').integerNumber();
+      });
+
       function func(num) {
-        using(arguments)
-          .verify('num').integerNumber();
+        verifyArgs(num);
       }
 
       func.bind(func, true).should.throw('num argument must be a Number');
     });
 
     it('throws a ValidationError if a conceptual number is provided', function() {
+      var verifyArgs = typester.createVerifier(function(verify) {
+        verify('num').integerNumber();
+      });
+
       function func(num) {
-        using(arguments)
-          .verify('num').integerNumber();
+        verifyArgs(num);
       }
 
       func.bind(func, Number.NaN).should.throw('num argument must be a real number');
     });
 
     it('throws a ValidationError if a non-integer number is provided', function() {
+      var verifyArgs = typester.createVerifier(function(verify) {
+        verify('num').integerNumber();
+      });
+
       function func(num) {
-        using(arguments)
-          .verify('num').integerNumber();
+        verifyArgs(num);
       }
 
       func.bind(func, -1).should.not.throw();

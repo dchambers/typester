@@ -1,10 +1,15 @@
-var using = require('../lib/typester').using;
+'use strict';
+
+var typester = require('../lib/typester');
 var topiarist = require('topiarist');
 
+var verifyArgs = typester.createVerifier(function(verify) {
+  verify('num1').isA(Number);
+  verify('num2').isA(Number);
+});
+
 function typesterFunc(num1, num2) {
-  using(arguments)
-    .verify('num1').isA(Number)
-    .verify('num2').isA(Number);
+  verifyArgs(num1, num2);
 
   return num1 + num2;
 }
