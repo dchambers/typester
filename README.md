@@ -11,31 +11,32 @@ Typester is inspired by the [check-types](https://www.npmjs.org/package/check-ty
   * Using a fluent declarative syntax that makes the type checking code easier to read, reducing the impulse developers otherwise have to unit-test their type verification code.
   * Throwing appropriately typed errors so that developers that still do want to unit-test their type-verification code can easily do so.
   * Providing rich textual error messages that inform developers why an argument has been deemed to be invalid.
+  * Failing if a method is invoked with more arguments than are expected.
   * Using a smaller set of verification methods to do the same thing.
+  * Having better performance by using a _hot-spotting_ mechanism that eventually causes type-verifications to be disabled within code hot spots.
   * Leveraging [topiarist](https://github.com/BladeRunnerJS/topiarist) to:
     * Allow a single `isA()` check to be used for what would otherwise have to be done with both `instanceof` and `typeof()`checks, as appropriate.
     * Provide a `fulfills()` method that can verify any object using shape-based duck typing.
-    *  Allow `isA()` checks to efficiently verify multiple inheritance (e.g. sand-boxed mix-ins and implemented interfaces) for applications that themselves used [topiarist](https://github.com/BladeRunnerJS/topiarist) to set these up.
-  * Failing if a method is invoked with more arguments than are expected.
-  * Providing a _hot-spotting_ mechanism that causes type-verification to be disabled within code hot spots.
+    *  Allow `isA()` checks to efficiently verify multiple inheritance, including sand-boxed mix-ins and implemented interfaces, for applications that used [topiarist](https://github.com/BladeRunnerJS/topiarist) to set these up.
 
 Here's how you might use Typester to implement `addEventListener()`:
 
 ``` javascript
 var typester = require('typester');
 
-var verifyArgs = typester.createVerifier(function(verify) {
+var verifyAddEventListenerArgs = typester.createVerifier(function(verify) {
   verify('target').fulfills(Postable);
   verify('listener').isA(Function);
   verify('useCapture').optionally.isA(Boolean);
 });
 
 Window.prototype.addEventListener = function(target, listener, useCapture) {
-  verifyArgs(target, listener, useCapture);
+  verifyAddEventListenerArgs(target, listener, useCapture);
 
   // implement the actual method...
 };
 ```
+
 Some things to note here:
 
   * The `isA()` method can be used to do both `instanceof` checks against objects, and `typeof` checks against literal values.
@@ -88,13 +89,13 @@ Subsequently, our custom `isEmailAddress()` verifier might be used like this:
 ``` javascript
 var typester = require('typester');
 
-var verifyArgs = typester.createVerifier(function(verify) {
+var verifyPersonArgs = typester.createVerifier(function(verify) {
   verify('name').isA(String);
   verify('email').isEmailAddress();
 });
 
 function Person(name, email) {
-  verifyArgs(name, email);
+  verifyPersonArgs(name, email);
 
   this.name = name;
   this.email = email;
