@@ -1,6 +1,6 @@
 {
 	"name": "typester",
-	"version": "1.0.0",
+	"version": "1.0.1",
 	"description": "Fluent type verification for JavaScript",
 	"main": "lib/typester.js",
 	"dependencies": {
